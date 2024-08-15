@@ -9,7 +9,9 @@ import (
 )
 
 type Client struct {
-	Addr string
+	Addr     string
+	Lang     string
+	Username string
 }
 
 func NewClient(addr string) *Client {
@@ -26,10 +28,9 @@ func (c *Client) Start() {
 
 	go listenForMessages(conn)
 
-	fmt.Println("Enter Username: ")
-	username := bufio.NewReader(os.Stdin)
-	name, _ := username.ReadString('\n')
-	conn.Write(([]byte(name)))
+	c.getUsername(conn)
+	c.getLanguage(conn)
+	c.sendAddr(conn)
 
 	reader := bufio.NewReader(os.Stdin)
 	for {
@@ -44,6 +45,7 @@ func (c *Client) Start() {
 		conn.Write([]byte(message + "\n"))
 	}
 }
+
 func listenForMessages(conn net.Conn) {
 	for {
 		message, err := bufio.NewReader(conn).ReadString('\n')
@@ -54,4 +56,24 @@ func listenForMessages(conn net.Conn) {
 		fmt.Print(message)
 	}
 
+}
+
+func (c *Client) getUsername(conn net.Conn) {
+	fmt.Println("Enter Username: ")
+	username := bufio.NewReader(os.Stdin)
+	name, _ := username.ReadString('\n')
+	c.Username = name
+	conn.Write(([]byte(name + "\n")))
+}
+
+func (c *Client) getLanguage(conn net.Conn) {
+	fmt.Println("Enter Language: ")
+	language := bufio.NewReader(os.Stdin)
+	lang, _ := language.ReadString('\n')
+	c.Lang = lang
+	conn.Write(([]byte(lang + "\n")))
+}
+
+func (c *Client) sendAddr(conn net.Conn) {
+	conn.Write(([]byte(c.Addr + "\n")))
 }

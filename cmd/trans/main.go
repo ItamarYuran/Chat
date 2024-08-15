@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"Chat/server" // Adjust this import path if necessary
+	"github.com/ItamarYuran/Chat/server" // Adjust this import path if necessary
 
 	"golang.org/x/text/language"
 )

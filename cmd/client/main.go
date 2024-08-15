@@ -1,7 +1,7 @@
 package main
 
 import (
-	client "Chat/client"
+	client "github.com/ItamarYuran/Chat/client"
 )
 
 func main() {
